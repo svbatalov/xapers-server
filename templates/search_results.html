@@ -1,0 +1,27 @@
+<!doctype html>
+<title>Search results for {{keywords}}</title>
+
+{% macro format_item(item) %}
+<a href="/id/{{item.id}}">
+  {{item.bib.authors|join(', ')}} / {{item.bib.year}}
+  / {{item.bib.title|e}} (id:{{item.id}}, {{item.matchp}}%)</a>
+{% endmacro %}
+
+<form action="" method="get" accept-charset="utf-8">
+  <input type="text" name="q" id="q" value="">
+  <input type="submit" value="Search">
+</form>
+{% if res %}
+<h3>
+  <p>{{res|length}} documents found:</p>
+</h3>
+<ol>
+  {% for item in res %}
+  <li>
+  {{ format_item(item) }}
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+  <h3>Nothing found</h3>
+{% endif %}

@@ -24,7 +24,7 @@ def file_by_id(id):
     if len(res) == 0: abort(404)
     path = res[0].get_files()[0]
     path = '{0:0>10}/{1}'.format(id, path)
-    print "PATH", args.xapers_root + path
+    print "SERVING PATH", args.xapers_root + path
     return send_from_directory(args.xapers_root+'/', path)
 
 @app.route("/")
@@ -36,7 +36,8 @@ def search():
     res = [ {'id': item.get_docid(),
              'matchp': item.matchp,
              'bib': item.get_bibdata(),
-             'path': item.get_fullpaths()[0].decode('utf-8')} for item in res]
+             'path': item.get_fullpaths()[0].decode('utf-8')}
+           for item in res]
     
     return render_template("search_results.html", res=res)
 

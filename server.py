@@ -15,11 +15,10 @@ parser.add_argument('-p', '--port', help="Port", default=5000, type=int)
 args = parser.parse_args()
 args.xapers_root = os.path.join(os.path.expanduser(args.xapers_root), '')
 print "Args:", args
-db = X.Database(args.xapers_root)
 app = Flask(__name__)
 
 def queryDB(q, limit=0):
-    return db.search(q, limit)
+    return X.Database(args.xapers_root).search(q, limit)
 
 @app.route("/id/<int:id>")
 def file_by_id(id):

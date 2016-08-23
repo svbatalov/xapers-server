@@ -18,9 +18,12 @@ print "Args:", args
 db = X.Database(args.xapers_root)
 app = Flask(__name__)
 
+def queryDB(q, limit=0):
+    return db.search(q, limit)
+
 @app.route("/id/<int:id>")
 def file_by_id(id):
-    res = db.search('id:'+str(id) )
+    res = queryDB('id:'+str(id), 1)
     if len(res) == 0: abort(404)
     path = res[0].get_files()[0]
     path = '{0:0>10}/{1}'.format(id, path)
@@ -32,7 +35,7 @@ def file_by_id(id):
 def search():
     keywords = request.args.get('q', '')
     limit = int(request.args.get('l', 0))
-    res = db.search(keywords, limit)
+    res = queryDB(keywords, limit)
     res = [ {'id': item.get_docid(),
              'matchp': item.matchp,
              'bib': item.get_bibdata(),

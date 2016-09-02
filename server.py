@@ -23,11 +23,12 @@ def queryDB(q, limit=0):
 @app.route("/id/<int:id>")
 def file_by_id(id):
     res = queryDB('id:'+str(id), 1)
-    if len(res) == 0: abort(404)
-    path = res[0].get_files()[0]
-    path = '{0:0>10}/{1}'.format(id, path)
+    if len(res) == 0: return abort(404)
+    file = res[0].get_files()[0]
+    id = '{0:0>10}'.format(id)
+    path = os.path.join(id, file)
     print "SERVING PATH", args.xapers_root + path
-    return send_from_directory(args.xapers_root+'/', path)
+    return send_from_directory(args.xapers_root, path, as_attachment=True)
 
 @app.route("/")
 @app.route("/search")
